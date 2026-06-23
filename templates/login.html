@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — SIM Mahasiswa</title>
+<style>
+*{ margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+body{
+    height:100vh; display:flex; justify-content:center; align-items:center;
+    background-image: url('/static/3.jpg');
+    background-size:cover; background-position:center;
+}
+.login-box{
+    width:420px; background:#fff; padding:35px;
+    border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+.login-box h1{ color:#0076ff; margin-bottom:10px; }
+.login-box p{ color:#666; margin-bottom:20px; }
+.login-box input{
+    width:100%; padding:13px; margin-bottom:15px;
+    border:1px solid #ddd; border-radius:10px; font-size:14px; outline:none;
+}
+.login-box input:focus{ border-color:#0076ff; }
+.login-box button{
+    width:100%; padding:13px; border:none; border-radius:10px;
+    background:#0076ff; color:white; cursor:pointer; font-size:16px; font-weight:bold;
+}
+.login-box button:hover{ background:#005fcc; }
+.error-msg{ color:#e53935; font-size:13px; margin-top:10px; text-align:center; }
+small{ display:block; text-align:center; margin-top:15px; color:#999; }
+</style>
+</head>
+<body>
+<div class="login-box">
+    <h1>SIM Mahasiswa</h1>
+    <p>Sistem Informasi Manajemen Mahasiswa</p>
+    <input id="username" placeholder="Username" value="admin">
+    <input id="password" type="password" placeholder="Password" value="admin123">
+    <button onclick="doLogin()">Masuk</button>
+    <div id="errMsg" class="error-msg"></div>
+    <small>Demo Login: admin / admin123</small>
+</div>
+<script>
+async function doLogin() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const res = await fetch('/login', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({username, password})
+    });
+    const data = await res.json();
+    if (data.success) {
+        window.location.href = '/';
+    } else {
+        document.getElementById('errMsg').innerText = data.message;
+    }
+}
+document.addEventListener('keydown', e => { if(e.key === 'Enter') doLogin(); });
+</script>
+</body>
+</html>
